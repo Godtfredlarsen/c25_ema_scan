@@ -24,6 +24,6 @@ jobs:
 
       - name: Run scanner
         env:
-         
+         EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         run: |
           python c25_ema_scan.py
