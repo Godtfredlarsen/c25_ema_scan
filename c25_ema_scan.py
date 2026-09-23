@@ -115,9 +115,9 @@ print(body)
 SMTP_SERVER = os.getenv("SMTP_SERVER")
 SMTP_PORT = 465
 
-EMAIL_SENDER = os.getenv("EMAIL_SENDER")
+EMAIL_SENDER = os.getenv("EMAIL")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
-EMAIL_RECEIVER = os.getenv("EMAIL_RECEIVER")
+EMAIL_RECEIVER = os.getenv("EMAIL")
 
 if (
     SMTP_SERVER
