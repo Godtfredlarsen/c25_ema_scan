@@ -8,7 +8,6 @@ on:
 
 jobs:
   scan:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -24,8 +23,6 @@ jobs:
 
       - name: Run scanner
         env:
-          SMTP_SERVER: send.one.com
-          SMTP_PORT: 587
-          EMAIL: mgl@godtfredlarsen.com
+          EMAIL_PASSWORD: DIN_ONE_COM_ADGANGSKODE
         run: |
           python c25_ema_scan.py
