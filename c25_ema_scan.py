@@ -118,12 +118,18 @@ EMAIL_SENDER = os.getenv("EMAIL")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 EMAIL_RECEIVER = os.getenv("EMAIL")
 
+print("SMTP_SERVER:", SMTP_SERVER)
+print("EMAIL_SENDER:", EMAIL_SENDER)
+print("EMAIL_RECEIVER:", EMAIL_RECEIVER)
+print("EMAIL_PASSWORD fundet:", EMAIL_PASSWORD is not None)
+
 if (
     SMTP_SERVER
     and EMAIL_SENDER
     and EMAIL_PASSWORD
     and EMAIL_RECEIVER
 ):
+
 
     msg = MIMEText(body)
 
