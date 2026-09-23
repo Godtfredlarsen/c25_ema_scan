@@ -23,6 +23,6 @@ jobs:
 
       - name: Run scanner
         env:
-          EMAIL_PASSWORD: DIN_ONE_COM_ADGANGSKODE
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         run: |
           python c25_ema_scan.py
