@@ -51,7 +51,6 @@ for company, ticker in TICKERS.items():
 
         close = df["Close"]
 
-        # Sikrer at Close bliver en simpel Series
         if isinstance(close, pd.DataFrame):
             close = close.iloc[:, 0]
 
@@ -112,6 +111,7 @@ body = "\n".join(report)
 print(body)
 
 # Email
+
 EMAIL = "mgl@godtfredlarsen.com"
 TO_EMAIL = "mgl@godtfredlarsen.com"
 
@@ -126,6 +126,8 @@ if PASSWORD and PASSWORD.strip():
     msg["To"] = TO_EMAIL
 
     try:
+        print("Forsøger at sende mail...")
+
         server = smtplib.SMTP("send.one.com", 587)
         server.starttls()
         server.login(EMAIL, PASSWORD)
@@ -146,6 +148,3 @@ if PASSWORD and PASSWORD.strip():
 
 else:
     print("EMAIL_PASSWORD mangler")
-    print("E-mail sendt")
-else:
-    print("Ingen e-mail konfigureret")
