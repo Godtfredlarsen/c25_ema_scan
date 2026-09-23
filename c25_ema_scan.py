@@ -112,40 +112,40 @@ body = "\n".join(report)
 print(body)
 
 # Email
-SMTP_SERVER = os.getenv("SMTP_SERVER")
-SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-EMAIL_SENDER = os.getenv("EMAIL")
+EMAIL = "mgl@godtfredlarsen.com"
+TO_EMAIL = "mgl@godtfredlarsen.com"
+
 PASSWORD = os.environ.get("EMAIL_PASSWORD")
-EMAIL_RECEIVER = os.getenv("EMAIL")
 
-print("SMTP_SERVER:", SMTP_SERVER)
-print("EMAIL_SENDER:", EMAIL_SENDER)
-print("EMAIL_RECEIVER:", EMAIL_RECEIVER)
-print("EMAIL_PASSWORD fundet:", EMAIL_PASSWORD is not None)
-
-if (
-    SMTP_SERVER
-    and EMAIL_SENDER
-    and EMAIL_PASSWORD
-    and EMAIL_RECEIVER
-):
-
+if PASSWORD and PASSWORD.strip():
 
     msg = MIMEText(body)
 
     msg["Subject"] = "Daglig C25 EMA50 Scan"
-    msg["From"] = EMAIL_SENDER
-    msg["To"] = EMAIL_RECEIVER
+    msg["From"] = EMAIL
+    msg["To"] = TO_EMAIL
 
-    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as smtp:
-        smtp.starttls()
-        smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
-        smtp.send_message(msg)
+    try:
+        server = smtplib.SMTP("send.one.com", 587)
+        server.starttls()
+        server.login(EMAIL, PASSWORD)
 
-#    with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as smtp:
-#      smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
-#      smtp.send_message(msg)
+        server.sendmail(
+            EMAIL,
+            TO_EMAIL,
+            msg.as_string()
+        )
 
+        server.quit()
+
+        print("MAIL SENDT ✅")
+
+    except Exception as e:
+        print("MAIL FEJL ❌")
+        print(e)
+
+else:
+    print("EMAIL_PASSWORD mangler")
     print("E-mail sendt")
 else:
     print("Ingen e-mail konfigureret")
