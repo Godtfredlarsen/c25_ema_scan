@@ -115,7 +115,7 @@ print(body)
 SMTP_SERVER = os.getenv("SMTP_SERVER")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 EMAIL_SENDER = os.getenv("EMAIL")
-EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+PASSWORD = os.environ.get("EMAIL_PASSWORD")
 EMAIL_RECEIVER = os.getenv("EMAIL")
 
 print("SMTP_SERVER:", SMTP_SERVER)
