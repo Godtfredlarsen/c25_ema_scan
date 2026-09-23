@@ -22,7 +22,7 @@ TICKERS = {
     "GN Store Nord": "GN.CO",
     "Jyske Bank": "JYSK.CO",
     "Netcompany": "NETC.CO",
-    "Sydbank": "SYDB.CO",
+    "Sydbank": "ALSYDB.CO",
     "NKT": "NKT.CO",
     "Ambu": "AMBU-B.CO",
     "Bavarian Nordic": "BAVA.CO",
