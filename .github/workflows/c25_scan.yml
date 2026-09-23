@@ -24,9 +24,8 @@ jobs:
 
       - name: Run scanner
         env:
-          SMTP_SERVER = "send.one.com"
-          SMTP_PORT = 587
-          EMAIL = "mgl@godtfredlarsen.com"
-          PASSWORD = os.getenv("EMAIL_PASSWORD")
+          SMTP_SERVER: send.one.com
+          SMTP_PORT: 587
+          EMAIL: mgl@godtfredlarsen.com
         run: |
           python c25_ema_scan.py
