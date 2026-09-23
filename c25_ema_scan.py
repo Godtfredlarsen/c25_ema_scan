@@ -132,9 +132,14 @@ if (
     msg["From"] = EMAIL_SENDER
     msg["To"] = EMAIL_RECEIVER
 
-    with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as smtp:
+    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as smtp:
+        smtp.starttls()
         smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
         smtp.send_message(msg)
+
+#    with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as smtp:
+#      smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
+#      smtp.send_message(msg)
 
     print("E-mail sendt")
 else:
