@@ -34,9 +34,11 @@ above_ema50 = []
 crossed_today = []
 errors = []
 
-for company, ticker in TICKERS.items():
+print("Starter C25 EMA50 scan...")
 
+for company, ticker in TICKERS.items():
     try:
+        print(f"Scanner {company} ({ticker})")
 
         df = yf.download(
             ticker,
@@ -46,7 +48,12 @@ for company, ticker in TICKERS.items():
             progress=False
         )
 
-        if df.empty or len(df) < 60:
+        if df.empty:
+            errors.append(f"{company}: Ingen data modtaget")
+            continue
+
+        if len(df) < 60:
+            errors.append(f"{company}: For få kursdata")
             continue
 
         close = df["Close"]
@@ -62,22 +69,69 @@ for company, ticker in TICKERS.items():
         ema_today = float(ema50.iloc[-1])
         ema_yesterday = float(ema50.iloc[-2])
 
-        if ticker == "NOVO-B.CO":
-            print(f"NOVO Close={close_today}")
-            print(f"NOVO EMA50={ema_today}")
-
         if close_today > ema_today:
             above_ema50.append(
                 f"{company}: Kurs {close_today:.2f} | EMA50 {ema_today:.2f}"
             )
 
-        if (
-            close_yesterday <= ema_yesterday
-            and close_today > ema_today
-        ):
+        if close_yesterday <= ema_yesterday and close_today > ema_today:
             crossed_today.append(
                 f"{company}: Kurs {close_today:.2f} | EMA50 {ema_today:.2f}"
             )
 
     except Exception as e:
-        errors.append(f"{ticker}: {str(e)}")
+        errors.append(f"{company} ({ticker}): {str(e)}")
+
+report = []
+report.append(f"C25 EMA50 Scan - {datetime.now():%Y-%m-%d}")
+report.append("")
+report.append("AKTIER OVER EMA50")
+report.append("=================")
+
+if above_ema50:
+    report.extend(sorted(above_ema50))
+else:
+    report.append("Ingen aktier fundet")
+
+report.append("")
+report.append("KRYDSER OP OVER EMA50")
+report.append("====================")
+
+if crossed_today:
+    report.extend(sorted(crossed_today))
+else:
+    report.append("Ingen aktier fundet")
+
+if errors:
+    report.append("")
+    report.append("FEJL")
+    report.append("====")
+    report.extend(errors)
+
+body = "\n".join(report)
+
+print(body)
+
+EMAIL = "mgl@godtfredlarsen.com"
+TO_EMAIL = "mgl@godtfredlarsen.com"
+PASSWORD = os.environ.get("EMAIL_PASSWORD")
+
+if not PASSWORD:
+    raise ValueError("EMAIL_PASSWORD mangler")
+
+msg = MIMEText(body)
+msg["Subject"] = f"C25 EMA50 Scan {datetime.now():%Y-%m-%d}"
+msg["From"] = EMAIL
+msg["To"] = TO_EMAIL
+
+try:
+    server = smtplib.SMTP("send.one.com", 587)
+    server.starttls()
+    server.login(EMAIL, PASSWORD)
+    server.sendmail(EMAIL, TO_EMAIL, msg.as_string())
+    server.quit()
+    print("MAIL SENDT ✅")
+except Exception as e:
+    print("MAIL FEJL ❌")
+    print(str(e))
+    raise
